@@ -20,8 +20,8 @@ import org.codehaus.groovy.runtime.InvokerHelper;
 import org.codehaus.groovy.runtime.InvokerInvocationException;
 import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation;
 
-import org.discobot.beans.PropertyChangeEvent;
-import org.discobot.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import org.discobot.beans.PropertyVetoException;
 
 

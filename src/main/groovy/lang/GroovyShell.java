@@ -15,7 +15,6 @@
  */
 package groovy.lang;
 
-import groovy.ui.GroovyMain;
 import groovy.security.GroovyCodeSourcePermission;
 
 import org.codehaus.groovy.control.CompilationFailedException;
@@ -55,7 +54,7 @@ public class GroovyShell extends GroovyObjectSupport {
     private GroovyClassLoader loader;
 
     public static void main(String[] args) {
-        GroovyMain.main(args);
+	throw new UnsupportedOperationException("Not supported in Discobot");
     }
 
     public GroovyShell() {

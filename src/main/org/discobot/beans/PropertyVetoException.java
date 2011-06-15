@@ -16,7 +16,7 @@
  */
 
 package org.discobot.beans;
-import org.discobot.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeEvent;
 
 /**
  * Indicates that a proposed property change is unacceptable.

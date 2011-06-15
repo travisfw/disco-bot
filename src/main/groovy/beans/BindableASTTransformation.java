@@ -34,8 +34,8 @@ import org.codehaus.groovy.transform.ASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 import org.objectweb.asm.Opcodes;
 
-import org.discobot.beans.PropertyChangeListener;
-import org.discobot.beans.PropertyChangeSupport;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 /**
  * Handles generation of code for the {@code @Bindable} annotation when {@code @Vetoable}

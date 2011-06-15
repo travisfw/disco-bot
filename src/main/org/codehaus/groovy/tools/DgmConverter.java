@@ -23,7 +23,6 @@ import org.codehaus.groovy.reflection.GeneratedMetaMethod;
 import org.codehaus.groovy.runtime.DateGroovyMethods;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.ProcessGroovyMethods;
-import org.codehaus.groovy.runtime.SwingGroovyMethods;
 import org.codehaus.groovy.runtime.SqlGroovyMethods;
 import org.codehaus.groovy.runtime.XmlGroovyMethods;
 import org.codehaus.groovy.runtime.EncodingGroovyMethods;
@@ -43,7 +42,6 @@ public class DgmConverter implements Opcodes{
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         Class [] classes = new Class [] {
             DefaultGroovyMethods.class,
-            SwingGroovyMethods.class,
             SqlGroovyMethods.class,
             XmlGroovyMethods.class,
             EncodingGroovyMethods.class,
