@@ -573,7 +573,7 @@ $Date$
         </unzip>
         <makeManifest file="${stagingDirectory}/META-INF/MANIFEST.MF"/>
         <!-- TODO try to make use of jarjar keep ability -->
-        <jarjar jarfile="${targetDistDirectory}/groovy-all.jar"
+        <jarjar jarfile="${targetDistDirectory}/discobot.jar"
                 manifest="${stagingDirectory}/META-INF/MANIFEST.MF">
             <fileset dir="${stagingDirectory}"
                      excludes="groovy/util/CliBuilder*.class,groovy/util/OptionAccessor*.class,org/codehaus/groovy/tools/shell/util/HelpFormatter*.class"/>
@@ -581,12 +581,12 @@ $Date$
             <rule pattern="org.objectweb.**" result="groovyjarjarasm.@1"/>
             <rule pattern="org.apache.commons.cli.**" result="groovyjarjarcommonscli.@1"/>
         </jarjar>
-        <jar destfile="${targetDistDirectory}/groovy-all.jar" update="true"
+        <jar destfile="${targetDistDirectory}/discobot.jar" update="true"
              basedir="${stagingDirectory}"
              includes="groovy/util/CliBuilder*.class,groovy/util/OptionAccessor*.class,org/codehaus/groovy/tools/shell/util/HelpFormatter*.class"/>
 
         <copy file="${targetDistDirectory}/groovy-${groovyVersion}-sources.jar"
-              tofile="${targetDistDirectory}/groovy-all-${groovyVersion}-sources.jar"/>
+              tofile="${targetDistDirectory}/discobot-${groovyVersion}-sources.jar"/>
         <delete dir="${stagingDirectory}" quiet="true"/>
     </target>
 
@@ -607,7 +607,7 @@ $Date$
                 <filter token="GROOVY_BUNDLE_VERSION" value="${groovyBundleVersion}"/>
             </filterset>
         </copy>
-        <property name="jarsToWrap" value="groovy.jar,groovy-all.jar"/>
+        <property name="jarsToWrap" value="groovy.jar,discobot.jar"/>
         <property name="runtimeJars" refid="runtimePath"/>
         <bndwrap definitions="${targetDistDirectory}" output="${targetDistDirectory}" failok="true"
                  classpath="${runtimeJars}">
@@ -615,8 +615,8 @@ $Date$
         </bndwrap>
         <delete dir="${targetDistDirectory}" includes="${jarsToWrap}"/>
         <move todir="${targetDistDirectory}">
-            <fileset dir="${targetDistDirectory}" includes="groovy*.bar"/>
-            <globmapper from="groovy*.bar" to="groovy*-${groovyVersion}.jar"/>
+            <fileset dir="${targetDistDirectory}" includes="*.bar"/>
+            <globmapper from="*.bar" to="*-${groovyVersion}.jar"/>
         </move>
         <delete dir="${targetDistDirectory}" includes="groovy*.bnd"/>
     </target>
@@ -650,7 +650,7 @@ $Date$
                 <include name="META-INF/*-LICENSE.txt"/>
             </patternset>
             <mapper type="flatten"/>
-            <fileset file="${targetDistDirectory}/groovy-all-${groovyVersion}.jar"/>
+            <fileset file="${targetDistDirectory}/discobot-${groovyVersion}.jar"/>
         </unzip>
         <fixcrlf srcdir="${installDirectory}" eol="crlf" includes="*.txt"/>
 
@@ -664,7 +664,7 @@ $Date$
         <!-- Install the embeddable bits -->
         <mkdir dir="${installDirectory}/embeddable"/>
         <copy todir="${installDirectory}/embeddable">
-            <fileset dir="${targetDistDirectory}" includes="groovy-all-${groovyVersion}.jar"/>
+            <fileset dir="${targetDistDirectory}" includes="discobot-${groovyVersion}.jar"/>
         </copy>
 
         <!-- Install configuration files -->
@@ -771,7 +771,7 @@ $Date$
         </javadoc>
         <mkdir dir="${targetDistDirectory}"/>
         <jar basedir="${docsDirectory}/api" destfile="${targetDistDirectory}/groovy-${groovyVersion}-javadoc.jar"/>
-        <copy toFile="${targetDistDirectory}/groovy-all-${groovyVersion}-javadoc.jar">
+        <copy toFile="${targetDistDirectory}/discobot-${groovyVersion}-javadoc.jar">
             <fileset file="${targetDistDirectory}/groovy-${groovyVersion}-javadoc.jar"/>
         </copy>
     </target>
@@ -847,7 +847,7 @@ $Date$
 
     <target name="-deployDefault" unless="_forceServerSettings_">
         <mavenDeploy version="${groovyVersion}" prefix="groovy"/>
-        <mavenDeploy version="${groovyVersion}" prefix="groovy-all"/>
+        <mavenDeploy version="${groovyVersion}" prefix="discobot"/>
     </target>
 
     <target name="-deployFromServer" if="_forceServerSettings_">
@@ -859,14 +859,14 @@ $Date$
             </filterset>
         </copy>
         <mavenDeploySettings version="${groovyVersion}" prefix="groovy" settings="target/settings.xml"/>
-        <mavenDeploySettings version="${groovyVersion}" prefix="groovy-all" settings="target/settings.xml"/>
+        <mavenDeploySettings version="${groovyVersion}" prefix="discobot" settings="target/settings.xml"/>
         <delete file="target/settings.xml"/>
     </target>
 
     <target name="installRepo" depends="-mavenInit,install,doc"
             description="Deploy artifacts to local maven repository.">
         <mavenInstallRepo version="${groovyVersion}" prefix="groovy"/>
-        <mavenInstallRepo version="${groovyVersion}" prefix="groovy-all"/>
+        <mavenInstallRepo version="${groovyVersion}" prefix="discobot"/>
     </target>
 
     <target name="quality" depends="install,checkstyle" description="install plus checkstyle"/>

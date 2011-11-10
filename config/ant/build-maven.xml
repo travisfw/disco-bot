@@ -67,8 +67,8 @@ $Date$
 
     <target name="-mavenPomDefinitions" unless="_skipFetch_">
         <maven.pom file="pom.xml" id="groovy.pom"/>
-        <xslt in="pom.xml" out="${targetDirectory}/groovy-all.pom" style="config/maven/groovy-all.xsl"/>
-        <maven.pom file="${targetDirectory}/groovy-all.pom" id="groovy-all.pom"/>
+        <xslt in="pom.xml" out="${targetDirectory}/discobot.pom" style="config/maven/discobot.xsl"/>
+        <maven.pom file="${targetDirectory}/discobot.pom" id="discobot.pom"/>
         <maven.pom file="config/maven/groovy-tools.pom" id="groovy-tools.pom"/>
         <maven.pom file="config/maven/groovy-examples.pom" id="groovy-examples.pom"/>
     </target>
