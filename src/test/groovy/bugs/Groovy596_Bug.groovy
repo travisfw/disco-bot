@@ -15,13 +15,14 @@
  */
 package groovy.bugs
 
-import java.beans.*
+import org.discobot.beans.*
 
 /**
  *  BeanInfo class usage
  */
 
-class Groovy596_Bug extends GroovyTestCase {
+class
+Groovy596_Bug extends GroovyTestCase {
 
     void testMetaClassUsageOfBeanInfoDoesNotConflictWithScriptUsageLeadingToStackOverflow() {
         assertNotNull(new A());
@@ -33,7 +34,7 @@ class Groovy596_Bug extends GroovyTestCase {
 
 class A extends java.beans.SimpleBeanInfo {}
 class B extends A {}
-class C implements java.beans.BeanInfo {
+class C implements org.discobot.beans.BeanInfo {
     public BeanDescriptor getBeanDescriptor() {return null;}
 
     public EventSetDescriptor[] getEventSetDescriptors() {return new EventSetDescriptor[0];}

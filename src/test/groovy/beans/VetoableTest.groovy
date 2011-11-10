@@ -37,7 +37,7 @@ class VetoableTest extends GroovySwingTestCase {
             changed = false
             sb.vetoableChange = { pce ->
                 if (changed) {
-                    throw new java.beans.PropertyVetoException("Twice, even!", pce)
+                    throw new org.discobot.beans.PropertyVetoException("Twice, even!", pce)
                 } else {
                     changed = true
                 }
@@ -47,7 +47,7 @@ class VetoableTest extends GroovySwingTestCase {
             try {
                 sb.name = "baz"
                 changed = false
-            } catch (java.beans.PropertyVetoException pve) {
+            } catch (org.discobot.beans.PropertyVetoException pve) {
                 // yep, we were vetoed
             }
         """)
@@ -285,7 +285,7 @@ class VetoableTest extends GroovySwingTestCase {
 
                     class VetoableTestBean9  {
                         @Vetoable String testField
-                        void addVetoableChangeListener(java.beans.VetoableChangeListener l) {}
+                        void addVetoableChangeListener(org.discobot.beans.VetoableChangeListener l) {}
                     }
                     new VetoableTestBean9()
                 """)
@@ -296,7 +296,7 @@ class VetoableTest extends GroovySwingTestCase {
                     import groovy.beans.Vetoable
 
                     class VetoableTestBean10  {
-                        void addPropertyChangeListener(java.beans.VetoableChangeListener l) {}
+                        void addPropertyChangeListener(org.discobot.beans.VetoableChangeListener l) {}
                     }
 
                     class VetoableTestBean11 extends VetoableTestBean9 {
@@ -313,7 +313,7 @@ class VetoableTest extends GroovySwingTestCase {
         shell.evaluate("""
             import groovy.beans.Vetoable
             import java.beans.PropertyChangeEvent
-            import java.beans.VetoableChangeListener
+            import org.discobot.beans.VetoableChangeListener
 
             @Vetoable
             class VetoableTestBeanChild extends VetoableTestBeanParent {
@@ -448,7 +448,7 @@ class VetoableTest extends GroovySwingTestCase {
         GroovyShell shell = new GroovyShell()
         shell.evaluate("""
             import groovy.beans.Vetoable
-            import java.beans.VetoableChangeListener
+            import org.discobot.beans.VetoableChangeListener
             import java.beans.PropertyChangeEvent
 
             class VetoableTestBean14 {

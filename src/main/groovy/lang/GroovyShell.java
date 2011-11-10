@@ -17,6 +17,7 @@ package groovy.lang;
 
 import groovy.security.GroovyCodeSourcePermission;
 
+import groovy.ui.GroovyMain;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.runtime.InvokerHelper;
@@ -54,7 +55,7 @@ public class GroovyShell extends GroovyObjectSupport {
     private GroovyClassLoader loader;
 
     public static void main(String[] args) {
-	throw new UnsupportedOperationException("Not supported in Discobot");
+	      GroovyMain.main(args);
     }
 
     public GroovyShell() {
@@ -88,12 +89,17 @@ public class GroovyShell extends GroovyObjectSupport {
         if (config == null) {
             throw new IllegalArgumentException("Compiler configuration must not be null.");
         }
-        final ClassLoader parentLoader = (parent!=null)?parent:GroovyShell.class.getClassLoader();
-        this.loader = AccessController.doPrivileged(new PrivilegedAction<GroovyClassLoader>() {
-            public GroovyClassLoader run() {
+        if(!(parent instanceof GroovyClassLoader)){
+            final ClassLoader parentLoader = (parent!=null)?parent:GroovyShell.class.getClassLoader();
+            this.loader = (GroovyClassLoader) AccessController.doPrivileged(new PrivilegedAction() {
+            public Object run() {
                 return new GroovyClassLoader(parentLoader,config);
             }
-        });
+            });
+        }else{
+            this.loader = (GroovyClassLoader)parent;
+        }
+                
         this.context = binding;        
         this.config = config;
     }

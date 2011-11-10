@@ -2,9 +2,7 @@ package groovy.lang
 
 class InnerClassResolvingTest extends GroovyTestCase {
     public void testInnerClass() {
-        // Thread.UncaughtExceptionHandler was added in Java 1.5
-        if (System.properties.'java.version'[2] >= '5') {
-            def script = '''
+        def script = '''
                 def caught = false
                 def t = Thread.start {
                     Thread.setDefaultUncaughtExceptionHandler(
@@ -14,18 +12,15 @@ class InnerClassResolvingTest extends GroovyTestCase {
                 t.join()
                 assert caught==true
             '''
-            new GroovyShell().evaluate(script)
-        }
+        new GroovyShell().evaluate(script)
     }
 
     public void testInnerClassWithPartialMatchOnImport() {
-        if (System.properties.'java.version'[2] >= '5') {
-            def script = '''
+        def script = '''
                 import java.lang.Thread as X
                 X.UncaughtExceptionHandler y = null
             '''
-            new GroovyShell().evaluate(script)
-        }
+        new GroovyShell().evaluate(script)
     }
 
 

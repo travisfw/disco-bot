@@ -126,14 +126,14 @@ public class GroovyDocToolTest extends GroovySwingTestCase {
             return;
         }
         List<String> srcList = new ArrayList<String>();
-        srcList.add("groovy/ui/Console.groovy");
+        srcList.add("groovy/util/ConfigObject.groovy");
         xmlTool.add(srcList);
         MockOutputTool output = new MockOutputTool();
         xmlTool.renderToOutput(output, MOCK_DIR);
 
-        String consoleDoc = output.getText(MOCK_DIR + "/groovy/ui/Console.html");
-        assertTrue(consoleDoc.indexOf("<constructor modifiers=\"public \" name=\"Console\">") > 0);
-        assertTrue(consoleDoc.indexOf("<parameter type=\"java.lang.ClassLoader\" name=\"parent\" />") > 0);
+        String consoleDoc = output.getText(MOCK_DIR + "/groovy/util/ConfigObject.html");
+        assertTrue(consoleDoc.indexOf("<constructor modifiers=\"public \" name=\"ConfigObject\">") > 0);
+        assertTrue(consoleDoc.indexOf("<parameter type=\"java.net.URL\" name=\"file\" />") > 0);
     }
 
     public void testClassComment() throws Exception {
@@ -149,12 +149,12 @@ public class GroovyDocToolTest extends GroovySwingTestCase {
 
     public void testMethodComment() throws Exception {
         List<String> srcList = new ArrayList<String>();
-        srcList.add("groovy/model/DefaultTableColumn.java");
+        srcList.add("groovy/lang/GroovyObject.java");
         xmlTool.add(srcList);
         MockOutputTool output = new MockOutputTool();
         xmlTool.renderToOutput(output, MOCK_DIR);
-        String defTabColDoc = output.getText(MOCK_DIR + "/groovy/model/DefaultTableColumn.html");
-        assertTrue(defTabColDoc.indexOf("Evaluates the value of a cell") > 0);
+        String defTabColDoc = output.getText(MOCK_DIR + "/groovy/lang/GroovyObject.html");
+        assertTrue(defTabColDoc.indexOf("Invokes the given method.") > 0);
     }
 
     public void testPackageName() throws Exception {
@@ -266,25 +266,12 @@ public class GroovyDocToolTest extends GroovySwingTestCase {
             return;
         }
         List<String> srcList = new ArrayList<String>();
-        srcList.add("groovy/swing/binding/AbstractButtonProperties.java");
+        srcList.add("groovy/mock/interceptor/MockFor.groovy");
         xmlTool.add(srcList);
         MockOutputTool output = new MockOutputTool();
         xmlTool.renderToOutput(output, MOCK_DIR);
-        String abstractButtonPropertiesDoc = output.getText(MOCK_DIR + "/groovy/swing/binding/AbstractButtonProperties.html");
+        String abstractButtonPropertiesDoc = output.getText(MOCK_DIR + "/groovy/mock/interceptor/MockFor.html");
         assertTrue(abstractButtonPropertiesDoc.indexOf("static") > 0);
-    }
-
-    public void testAnonymousInnerClassMethodsNotIncluded() throws Exception {
-        if (isHeadless()) {
-            return;
-        }
-        List<String> srcList = new ArrayList<String>();
-        srcList.add("groovy/swing/binding/AbstractButtonProperties.java");
-        xmlTool.add(srcList);
-        MockOutputTool output = new MockOutputTool();
-        xmlTool.renderToOutput(output, MOCK_DIR);
-        String abstractButtonPropertiesDoc = output.getText(MOCK_DIR + "/groovy/swing/binding/AbstractButtonProperties.html");
-        assertTrue(abstractButtonPropertiesDoc.indexOf("createBinding") < 0);
     }
 
     public void testMultipleConstructorError() throws Exception {
@@ -331,12 +318,12 @@ public class GroovyDocToolTest extends GroovySwingTestCase {
         );
         
         List<String> srcList = new ArrayList<String>();
-        srcList.add("groovy/model/DefaultTableColumn.java");
+        srcList.add("groovy/lang/GString.java");
         srcList.add("org/codehaus/groovy/tools/groovydoc/GroovyDocToolTestSampleGroovy.groovy");
         multipleXmlTool.add(srcList);
         MockOutputTool output = new MockOutputTool();
         multipleXmlTool.renderToOutput(output, MOCK_DIR);
-        assertTrue(output.getText(MOCK_DIR + "/groovy/model/DefaultTableColumn.html") != null);
+        assertTrue(output.getText(MOCK_DIR + "/groovy/lang/GString.html") != null);
         assertTrue(output.getText(MOCK_DIR + "/org/codehaus/groovy/tools/groovydoc/GroovyDocToolTestSampleGroovy.html") != null);
     }
 }

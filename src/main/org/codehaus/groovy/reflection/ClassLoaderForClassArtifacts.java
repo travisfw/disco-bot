@@ -38,9 +38,14 @@ public class ClassLoaderForClassArtifacts extends ClassLoader {
         this.klazz = new SoftReference<Class> (klazz);
     }
 
-    public Class define (String name, byte [] bytes) {
-        Class cls = defineClass(name, bytes, 0, bytes.length, klazz.get().getProtectionDomain());
-        resolveClass(cls);
+    public Class define(String name, byte[] bytes) {
+        //Use load class instead
+        Class cls = null;
+        try {
+            cls = loadClass(name);
+        } catch (ClassNotFoundException cnfe) {
+        }
+
         return cls;
     }
 

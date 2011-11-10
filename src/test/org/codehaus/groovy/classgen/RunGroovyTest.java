@@ -92,7 +92,7 @@ public class RunGroovyTest extends TestSupport {
 
     public void testConsole() throws Exception {
         try {
-            GroovyObject object = compile("src/main/groovy/ui/Console.groovy");
+            GroovyObject object = compile("src/main/groovy/util/ConfigSlurper.groovy");
         } catch (NoClassDefFoundError e) {
             
         } catch (HeadlessException he) {

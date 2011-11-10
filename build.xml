@@ -520,6 +520,10 @@ $Date$
     <target name="-createBaseJar" unless="testFailed">
         <jar destfile="${targetDistDirectory}/groovy.jar" basedir="${mainClassesDirectory}"
              excludes="*.groovy" manifest="${mainClassesDirectory}/META-INF/MANIFEST.MF"/>
+        <!--<jar destfile="${targetDistDirectory}/groovy.jar" excludes="*.groovy" manifest="${mainClassesDirectory}/META-INF/MANIFEST.MF">-->
+            <!--<fileset dir="${mainClassesDirectory}"/>-->
+            <!--<fileset dir="${testClassesDirectory}/groovy/lang"/>-->
+        <!--</jar>-->
         <jar destfile="${targetDistDirectory}/groovy-${groovyVersion}-sources.jar" basedir="${mainSourceDirectory}"/>
     </target>
 
@@ -536,6 +540,7 @@ $Date$
             <fileset dir="${runtimeLibDirectory}">
                 <include name="antlr*.jar"/>
                 <include name="asm*.jar"/>
+	            <include name="dx*.jar"/>
                 <exclude name="asm-attr*.jar"/>
                 <exclude name="asm-util*.jar"/>
                 <exclude name="asm-analysis*.jar"/>

@@ -60,9 +60,9 @@ import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.objectweb.asm.Opcodes;
 
-import java.beans.BeanInfo;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
+import org.discobot.beans.BeanInfo;
+import org.discobot.beans.Introspector;
+import org.discobot.beans.PropertyDescriptor;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

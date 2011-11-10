@@ -1,7 +1,7 @@
 package groovy;
 
-import java.beans.EventSetDescriptor;
-import java.beans.SimpleBeanInfo;
+import org.discobot.beans.EventSetDescriptor;
+import org.discobot.beans.SimpleBeanInfo;
 import java.lang.reflect.Method;
 
 public class StrangeBeanBeanInfo extends SimpleBeanInfo {

@@ -141,6 +141,16 @@ public class CompilerConfiguration {
     private Map<String, Object> jointCompilationOptions;
     
     /**
+     * if true classfiles will be written as a jared dexfile
+     */
+    private boolean dexOut;
+
+    /**
+     * The name of the target jarfile when dexout is enabled
+     */
+    private String dexName;
+
+    /**
      * Sets the Flags to defaults.
      */
     public CompilerConfiguration() {
@@ -181,6 +191,8 @@ public class CompilerConfiguration {
         	setDefaultScriptExtension(".groovy");
         }
 
+        setDexOut(false);
+        setDexName("groovyJar.jar");
         //
         // Source file encoding
         String encoding = null;
@@ -242,6 +254,8 @@ public class CompilerConfiguration {
         setSourceEncoding(configuration.getSourceEncoding());
         setOutput(configuration.getOutput());
         setTargetDirectory(configuration.getTargetDirectory());
+        setDexOut(configuration.getDexOut());
+        setDexName(configuration.getDexName());
         Map<String, Object> jointCompilationOptions = configuration.getJointCompilationOptions();
         if (jointCompilationOptions != null) {
             jointCompilationOptions = new HashMap<String, Object>(jointCompilationOptions);
@@ -406,6 +420,22 @@ public class CompilerConfiguration {
             setRecompileGroovySource(text.equalsIgnoreCase("true"));
         }
         
+        //
+        // dexout options
+        //
+        text = configuration.getProperty("groovy.dexout");
+        if (text != null) {
+            setDexOut(text.equalsIgnoreCase("true"));
+        }
+
+        //
+        // dexname options
+        //
+        text = configuration.getProperty("groovy.dexname");
+        if (text != null) {
+            setDexName(text);
+        }
+
         numeric = 100;
         try {
             text = configuration.getProperty("groovy.recompile.minimumIntervall");
@@ -688,5 +718,29 @@ public class CompilerConfiguration {
      */
     public void setJointCompilationOptions(Map<String, Object> options) {
         jointCompilationOptions = options;
+    }
+
+    /**
+     * Sets wether classes should be written as a dexfile
+     * @param b if true classes will be written in dexformat
+     */
+    public void setDexOut(boolean b){
+        dexOut = b;
+    }
+
+    /**
+     * Gets the dexfile configuration option
+     * @return true if classes will be written in dexformat
+     */
+    public boolean getDexOut(){
+        return dexOut;
+    }
+
+    public String getDexName(){
+        return dexName;
+    }
+
+    public void setDexName(String name){
+        dexName = name;
     }
 }

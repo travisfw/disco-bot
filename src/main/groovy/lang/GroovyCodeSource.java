@@ -197,7 +197,7 @@ public class GroovyCodeSource {
         }
     }
 
-    CodeSource getCodeSource() {
+    public CodeSource getCodeSource() {
         return codeSource;
     }
 

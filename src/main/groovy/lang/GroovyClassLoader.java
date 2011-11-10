@@ -387,10 +387,14 @@ public class GroovyClassLoader extends URLClassLoader {
                 return getClass().getProtectionDomain();
             }
         });
-        PermissionCollection myPerms = myDomain.getPermissions();
-        if (myPerms != null) {
-            for (Enumeration<Permission> elements = myPerms.elements(); elements.hasMoreElements();) {
-                perms.add(elements.nextElement());
+        if(myDomain == null) {
+            perms.add(new AllPermission());
+        } else {
+            PermissionCollection myPerms = myDomain.getPermissions();
+            if (myPerms != null) {
+                for (Enumeration<Permission> elements = myPerms.elements(); elements.hasMoreElements();) {
+                    perms.add(elements.nextElement());
+                }
             }
         }
         perms.setReadOnly();
