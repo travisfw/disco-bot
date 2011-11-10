@@ -59,6 +59,10 @@ $Date$
         <istrue value="${skipEmbeddable}"/>
     </condition>
 
+    <condition property="_skipTestJar_">
+        <istrue value="${skipTestJar}"/>
+    </condition>
+
     <condition property="_forceServerSettings_">
         <istrue value="${forceServerSettings}"/>
     </condition>
@@ -206,6 +210,10 @@ $Date$
     </target>
 
     <target name="compileTestOnly" unless="_skipTests_">
+        <antcall inheritrefs="true" target="-actuallyCompileTestOnly"/>
+    </target>
+
+    <target name="-actuallyCompileTestOnly">
         <mkdir dir="${testClassesDirectory}"/>
         <antcall inheritrefs="true" target="-compileTest"/>
     </target>
@@ -424,7 +432,7 @@ $Date$
     </target>
 
     <target name="-actuallyCreateJars"
-            depends="-makeManifest,-initializeJars,-createBaseJar,-createEmbeddableJar"
+            depends="-makeManifest,-initializeJars,-createBaseJar,-createEmbeddableJar,-createTestJar"
             unless="testFailed"/>
 
     <target name="-makeManifest">
@@ -520,10 +528,6 @@ $Date$
     <target name="-createBaseJar" unless="testFailed">
         <jar destfile="${targetDistDirectory}/groovy.jar" basedir="${mainClassesDirectory}"
              excludes="*.groovy" manifest="${mainClassesDirectory}/META-INF/MANIFEST.MF"/>
-        <!--<jar destfile="${targetDistDirectory}/groovy.jar" excludes="*.groovy" manifest="${mainClassesDirectory}/META-INF/MANIFEST.MF">-->
-            <!--<fileset dir="${mainClassesDirectory}"/>-->
-            <!--<fileset dir="${testClassesDirectory}/groovy/lang"/>-->
-        <!--</jar>-->
         <jar destfile="${targetDistDirectory}/groovy-${groovyVersion}-sources.jar" basedir="${mainSourceDirectory}"/>
     </target>
 
@@ -584,6 +588,12 @@ $Date$
         <copy file="${targetDistDirectory}/groovy-${groovyVersion}-sources.jar"
               tofile="${targetDistDirectory}/groovy-all-${groovyVersion}-sources.jar"/>
         <delete dir="${stagingDirectory}" quiet="true"/>
+    </target>
+
+    <target name="-createTestJar" depends="-actuallyCompileTestOnly, -actuallyCreateTestJar" unless="testFailed"/>
+
+    <target name="-actuallyCreateTestJar" unless="_skipTestJar_">
+        <jar destfile="${targetDistDirectory}/discobot-tests.jar" basedir="${testClassesDirectory}" />
     </target>
 
     <target name="createJars" depends="-checkAntVersion,test,-actuallyCreateJars"
@@ -809,7 +819,6 @@ $Date$
             </classpath>
             <arg value="org.codehaus.groovy.runtime.DefaultGroovyMethods"/>
             <arg value="org.codehaus.groovy.runtime.SqlGroovyMethods"/>
-            <arg value="org.codehaus.groovy.runtime.SwingGroovyMethods"/>
             <arg value="org.codehaus.groovy.runtime.XmlGroovyMethods"/>
             <arg value="org.codehaus.groovy.runtime.EncodingGroovyMethods"/>
             <arg value="org.codehaus.groovy.runtime.DateGroovyMethods"/>
