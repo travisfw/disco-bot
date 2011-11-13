@@ -566,6 +566,8 @@
             <groupId>com.android.dx</groupId>
             <artifactId>dx</artifactId>
             <version>2.1.2-patched</version>
+            <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
         <!-- dependencies used by optional features -->
 
