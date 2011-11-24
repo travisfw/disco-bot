@@ -28,6 +28,9 @@ import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.classgen.Verifier;
 import org.codehaus.groovy.control.*;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
+import org.discobot.application.DiscobotApplication;
+import android.content.Context;
+import dalvik.system.DexFile;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 
@@ -289,32 +292,62 @@ public class GroovyClassLoader extends URLClassLoader {
     }
 
     private Class doParseClass(GroovyCodeSource codeSource) {
-        validate(codeSource);
-        Class answer;  // Was neither already loaded nor compiling, so compile and add to cache.
-        CompilationUnit unit = createCompilationUnit(config, codeSource.getCodeSource());
-        SourceUnit su = null;
+        Class answer = null;
+
+        CompilerConfiguration newconf = new CompilerConfiguration();
+        newconf.setDexOut(true);
+        newconf.setDexName(getScriptName(codeSource) + ".jar");
+        Context context = DiscobotApplication.getContext();
+        newconf.setTargetDirectory(context.getCacheDir());
+
+        CompilationUnit unit = createCompilationUnit(newconf, codeSource.getCodeSource());
+        SourceUnit sourceUnit = null;
+
         if (codeSource.getFile() == null) {
-            su = unit.addSource(codeSource.getName(), codeSource.getScriptText());
+            sourceUnit = unit.addSource(codeSource.getName(), codeSource.getScriptText());
         } else {
-            su = unit.addSource(codeSource.getFile());
+            sourceUnit = unit.addSource(codeSource.getFile());
         }
 
-        ClassCollector collector = createCollector(unit, su);
-        unit.setClassgenCallback(collector);
-        int goalPhase = Phases.CLASS_GENERATION;
-        if (config != null && config.getTargetDirectory() != null) goalPhase = Phases.OUTPUT;
-        unit.compile(goalPhase);
+        unit.compile(Phases.OUTPUT);
 
-        answer = collector.generatedClass;
-        String mainClass = su.getAST().getMainClassName();
-        for (Object o : collector.getLoadedClasses()) {
-            Class clazz = (Class) o;
-            String clazzName = clazz.getName();
-            definePackage(clazzName);
-            setClassCacheEntry(clazz);
-            if(clazzName.equals(mainClass)) answer = clazz;
+        File fi = new File(context.getCacheDir(), newconf.getDexName());
+        File fo = new File(context.getCacheDir(), newconf.getDexName() + "@classes.dex");
+
+        //load the generated dex and define the class
+        try {
+            String mainClass = sourceUnit.getAST().getMainClassName();
+            DexFile df = DexFile.loadDex(fi.getPath(), fo.getPath(), 0);
+
+            Enumeration<String> entries = df.entries();
+            InnerLoader inner = new InnerLoader(this);
+            while (entries.hasMoreElements()) {
+                String entry = entries.nextElement();
+                Class clazz = df.loadClass(entry, inner);
+                definePackage(entry);
+                setClassCacheEntry(clazz);
+
+                if (entry.equals(mainClass)) {
+                    answer = clazz;
+                }
+            }
+            df.close();
+        } catch (CompilationFailedException cfe) {
+            throw cfe;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            fi.delete();
+            fo.delete();
         }
+
         return answer;
+    }
+
+    private String getScriptName(GroovyCodeSource gcs) {
+        int dot = gcs.getName().lastIndexOf(".");
+        String randomNamePart = UUID.randomUUID().toString();
+        return gcs.getName().substring(0, dot) + randomNamePart;
     }
 
     private void validate(GroovyCodeSource codeSource) {
