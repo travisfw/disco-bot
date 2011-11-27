@@ -20,7 +20,7 @@ package groovy.util
  *
  * @author Alex Tkachman
  */
-class GroovyShellTestCase extends GroovyTestCase {
+abstract class GroovyShellTestCase extends GroovyTestCase {
 
     @Delegate protected GroovyShell shell
 

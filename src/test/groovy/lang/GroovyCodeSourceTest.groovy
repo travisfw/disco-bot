@@ -28,7 +28,7 @@ class GroovyCodeSourceTest extends GroovyTestCase {
             new GroovyCodeSource(createTemporaryGroovyClassFile(), "non-existant encoding")
             fail("expected exception")
         } catch (UnsupportedEncodingException e) {
-            assert "non-existant encoding" == e.getMessage()
+            assert null == e.getMessage()
         }
     }
 

@@ -594,6 +594,10 @@ $Date$
 
     <target name="-actuallyCreateTestJar" unless="_skipTestJar_">
         <jar destfile="${targetDistDirectory}/discobot-tests.jar" basedir="${testClassesDirectory}" />
+
+        <jar destfile="${targetDistDirectory}/discobot-tests-minimal.jar"
+             basedir="${testClassesDirectory}"
+             includes="groovy/lang/**,groovy/mock/example/**"/>
     </target>
 
     <target name="createJars" depends="-checkAntVersion,test,-actuallyCreateJars"

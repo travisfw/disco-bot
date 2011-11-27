@@ -1,9 +1,11 @@
 package groovy.lang
 
+import org.discobot.application.DiscobotApplication
+
 class ClassReloadingTest extends GroovyTestCase {
 
     public void testReloading() {
-        def file = File.createTempFile("TestReload", ".groovy", new File("target"))
+        def file = File.createTempFile("TestReload", ".groovy", DiscobotApplication.context.cacheDir)
         file.deleteOnExit()
         def className = file.name - ".groovy"
 

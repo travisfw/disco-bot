@@ -46,6 +46,10 @@ public class ProxyGenerator {
     private List<Method> objectMethods = getInheritedMethods(Object.class, new ArrayList<Method>());
     private List<Method> groovyObjectMethods = getInheritedMethods(GroovyObject.class, new ArrayList<Method>());
 
+    public ProxyGenerator() {
+        override = new GroovyClassLoader();
+    }
+
     public boolean getDebug() {
         return debug;
     }
