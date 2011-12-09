@@ -46,10 +46,6 @@ public class ProxyGenerator {
     private List<Method> objectMethods = getInheritedMethods(Object.class, new ArrayList<Method>());
     private List<Method> groovyObjectMethods = getInheritedMethods(GroovyObject.class, new ArrayList<Method>());
 
-    public ProxyGenerator() {
-        override = new GroovyClassLoader();
-    }
-
     public boolean getDebug() {
         return debug;
     }
@@ -236,7 +232,9 @@ public class ProxyGenerator {
         Binding binding = new Binding();
         binding.setVariable("map", map);
         binding.setVariable("constructorArgs", constructorArgs);
-        ClassLoader cl = override != null ? override : baseClass.getClassLoader();
+
+        ClassLoader cl = determineClassLoader(baseClass);
+        
         if (clazz == null && interfacesToImplement.size() > 0) {
             Class c = interfacesToImplement.get(0);
             cl = c.getClassLoader();
@@ -249,6 +247,18 @@ public class ProxyGenerator {
         } catch (MultipleCompilationErrorsException err) {
             throw new GroovyRuntimeException("Error creating proxy: " + err.getMessage());
         }
+    }
+
+    private ClassLoader determineClassLoader(Class baseClass) {
+        ClassLoader cl;
+        if(override != null) {
+            cl = override;
+        } else if (!(baseClass.getClassLoader() instanceof GroovyClassLoader)) {
+            cl = new GroovyClassLoader();
+        } else {
+            cl = baseClass.getClassLoader();
+        }
+        return cl;
     }
 
     public GroovyObject instantiateDelegate(Object delegate) {
